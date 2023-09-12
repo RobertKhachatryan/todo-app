@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  padding: 20px;
 }
 
 .App-logo {
@@ -35,4 +36,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+.error{
+  border: 1px solid red;
+}
+.error-message{
+  color:red
+}
+.selected-bg{
+  background-color: greenyellow;
+}
+.is-done{
+  opacity: .5;
 }
