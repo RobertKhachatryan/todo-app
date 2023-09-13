@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FilterValuesType } from "./App";
+import AddItemForm from "./AddItemForm";
 
+// TYPES
 export type TaskType = {
   id: string;
   title: string;
@@ -15,46 +17,29 @@ type PropsType = {
   removeTask: (id: string, todoListId: string) => void;
   changeFilter: (value: FilterValuesType, todoListId: string) => void;
   addTask: (title: string, todoListId: string) => void;
+  removeTodoList: (todoListId: string) => void;
   changeTaskStatus: (
     taskId: string,
     isDone: boolean,
     todoListId: string
   ) => void;
-  removeTodoList: (todoListId: string) => void;
 };
 
 export const TodoList = (props: PropsType) => {
-  //////////////////////////////////////////////////////////////////////////
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  //////////////////////////////////////////////////////////////////////////
-
-  const onNewTitleChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
-  };
-  const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-    if (e.code === "Enter") {
-      props.addTask(newTaskTitle, props.id);
-      setNewTaskTitle("");
-    }
-  };
-  const addTask = () => {
-    if (newTaskTitle.trim() !== "") {
-      props.addTask(newTaskTitle.trim(), props.id);
-      setNewTaskTitle("");
-    } else {
-      setError("Title is reuired");
-    }
-  };
-
   const onAllClickFilterHandler = () => props.changeFilter("all", props.id);
+
   const onActiveClickFilterHandler = () =>
     props.changeFilter("active", props.id);
+
   const onCompletedClickFilterHandler = () =>
     props.changeFilter("completed", props.id);
+
   const removeTodoList = () => {
     props.removeTodoList(props.id);
+  };
+
+  const addTask = (title: string) => {
+    props.addTask(title, props.id);
   };
   ///////////////////////////////////////////////////////////////////////////////
   return (
@@ -63,17 +48,7 @@ export const TodoList = (props: PropsType) => {
         {props.title + "   "}
         <button onClick={removeTodoList}>X</button>
       </h3>
-      <div>
-        <input
-          type="text"
-          value={newTaskTitle}
-          onChange={onNewTitleChangeHandler}
-          onKeyDown={onKeyDownHandler}
-          className={error ? "error" : ""}
-        />
-        <button onClick={addTask}>+</button>
-        {error && <div className="error-message">Title is required</div>}
-      </div>
+      <AddItemForm addItem={addTask} />
       <ul>
         {props.tasks.map((t) => {
           const removeTask = () => {
