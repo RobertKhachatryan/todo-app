@@ -65,10 +65,29 @@ function App() {
     }
   }
   function changeStatus(taskId: string, isDone: boolean, todoListId: string) {
+    // get the required array by todoListId
     let tasks = tasksObj[todoListId];
+    // find the right task
     let task = tasks.find((t) => t.id === taskId);
+    // Change the task if it is found
     if (task) {
       task.isDone = isDone;
+      setTasksObj({ ...tasksObj });
+    }
+  }
+  //
+  function changeTaskTitle(
+    taskId: string,
+    newTitle: string,
+    todoListId: string
+  ) {
+    // get the required array by todoListId
+    let tasks = tasksObj[todoListId];
+    // find the right task
+    let task = tasks.find((t) => t.id === taskId);
+    // Change the task name if it is found
+    if (task) {
+      task.title = newTitle;
       setTasksObj({ ...tasksObj });
     }
   }
@@ -88,7 +107,13 @@ function App() {
     setTodoLists([todoList, ...todoLists]);
     setTasksObj({ ...tasksObj, [todoList.id]: [] });
   }
-
+  function changeTodoListTitle(id: string, newTitle: string) {
+    const todoList = todoLists.find((tl) => tl.id === id);
+    if (todoList) {
+      todoList.title = newTitle;
+      setTodoLists([...todoLists]);
+    }
+  }
   return (
     <div className="App">
       <AddItemForm addItem={addTodoList} />
@@ -103,16 +128,18 @@ function App() {
         }
         return (
           <TodoList
-            key={tl.id}
             id={tl.id}
+            key={tl.id}
             title={tl.title}
+            filter={tl.filter}
             tasks={tasksForTodoList}
+            addTask={addTask}
             removeTask={removeTask}
             changeFilter={changeFilter}
-            filter={tl.filter}
-            addTask={addTask}
             changeTaskStatus={changeStatus}
             removeTodoList={removeTodoList}
+            changeTaskTitle={changeTaskTitle}
+            changeTodoListTitle={changeTodoListTitle}
           />
         );
       })}
