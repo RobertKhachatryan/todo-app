@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Button } from "@mui/material";
 // TYPES
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
@@ -37,7 +37,9 @@ function AddItemForm(props: AddItemFormPropsType) {
         onKeyDown={onKeyDownHandler}
         className={error ? "error" : ""}
       />
-      <button onClick={addTask}>+</button>
+      <Button onClick={addTask} variant="contained" color="primary">
+        +
+      </Button>
       {error && <div className="error-message">Title is required</div>}
     </div>
   );
