@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
+import { ControlPoint } from "@mui/icons-material";
 // TYPES
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
@@ -14,10 +15,10 @@ function AddItemForm(props: AddItemFormPropsType) {
       props.addItem(newTaskTitle.trim());
       setNewTaskTitle("");
     } else {
-      setError("Title is reuired");
+      setError("Title is required");
     }
   };
-  const onNewTitleChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
+  const onNewTitleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(e.currentTarget.value);
   };
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -30,17 +31,18 @@ function AddItemForm(props: AddItemFormPropsType) {
 
   return (
     <div>
-      <input
-        type="text"
+      <TextField
+        variant="outlined"
+        label="Type value"
         value={newTaskTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={onKeyDownHandler}
-        className={error ? "error" : ""}
+        error={!!error}
+        helperText={error}
       />
-      <Button onClick={addTask} variant="contained" color="primary">
-        +
-      </Button>
-      {error && <div className="error-message">Title is required</div>}
+      <IconButton onClick={addTask} color="primary">
+        <ControlPoint />
+      </IconButton>
     </div>
   );
 }
